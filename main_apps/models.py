@@ -7,11 +7,20 @@ class Module(models.Model):
     url_path = models.CharField(
         max_length=255,
         unique=True,
-        # help_text="Url path sudah digunakan, harus unik. hanya huruf kecil, angka, hyphens (-), dan slashes (/) yang diperbolehkan."
     )
     description = models.TextField(blank=True, null=True)
     version = models.CharField(max_length=10, default='1.0')
     is_active = models.BooleanField(default=True) 
+
+    def __str__(self):
+        return self.name
+    
+class NamaProduct(models.Model):
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='products')
+    name = models.CharField(max_length=100)
+    barcode = models.CharField(max_length=50, unique=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.PositiveIntegerField()
 
     def __str__(self):
         return self.name
