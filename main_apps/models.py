@@ -7,6 +7,7 @@ class Module(models.Model):
     url_path = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     version = models.CharField(max_length=10, default='1.0')
+    is_active = models.BooleanField(default=True) 
 
     def __str__(self):
         return self.name

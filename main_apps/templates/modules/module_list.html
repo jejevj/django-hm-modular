@@ -3,24 +3,38 @@
 <h1>Installed Modules</h1>
 
 {% if modules %}
-  <table border="1" cellpadding="10">
-    <tr>
-      <th>Name</th>
-      <th>URL Path</th>
-      <th>Description</th>
-      <th>Version</th>
-    </tr>
-    {% for module in modules %}
-      <tr>
-        <td>{{ module.name }}</td>
-        <td>{{ module.url_path }}</td>
-        <td>{{ module.description }}</td>
-        <td>{{ module.version }}</td>
-      </tr>
-    {% endfor %}
-  </table>
+<table border="1" cellpadding="10">
+  <tr>
+    <th>Name</th>
+    <th>URL Path</th>
+    <th>Description</th>
+    <th>Version</th>
+    <th>Actions</th>
+  </tr>
+  {% for module in modules %}
+  <tr>
+    <td>{{ module.name }}</td>
+    <td>{{ module.url_path }}</td>
+    <td>{{ module.description }}</td>
+    <td>{{ module.version }}</td>
+    <td>
+      <a href="{% url 'upgrade-module' module.id %}"><button>Upgrade</button></a>
+      <form action="{% url 'toggle-module' module.id %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        {% if module.is_active %}
+        <button type="submit"
+          onclick="return confirm('Are you sure you want to uninstall this module?')">Uninstall</button>
+        {% else %}
+        <button type="submit" onclick="return confirm('Reinstall this module?')">Reinstall</button>
+        {% endif %}
+      </form>
+
+    </td>
+  </tr>
+  {% endfor %}
+</table>
 {% else %}
-  <p>No modules installed yet.</p>
+<p>No modules installed yet.</p>
 {% endif %}
 
 <br>
