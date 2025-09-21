@@ -1,0 +1,8 @@
+<!-- modules/templates/modules/module_detail.html -->
+
+<h1>{{ module.name }}</h1>
+<p><strong>URL Path:</strong> {{ module.url_path }}</p>
+<p><strong>Description:</strong> {{ module.description }}</p>
+<p><strong>Version:</strong> {{ module.version }}</p>
+
+<a href="{% url 'module-list' %}">← Back to module list</a>
