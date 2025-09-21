@@ -7,7 +7,7 @@ class Module(models.Model):
     url_path = models.CharField(
         max_length=255,
         unique=True,
-        help_text="Url path sudah digunakan, harus unik. hanya huruf kecil, angka, hyphens (-), dan slashes (/) yang diperbolehkan."
+        # help_text="Url path sudah digunakan, harus unik. hanya huruf kecil, angka, hyphens (-), dan slashes (/) yang diperbolehkan."
     )
     description = models.TextField(blank=True, null=True)
     version = models.CharField(max_length=10, default='1.0')
