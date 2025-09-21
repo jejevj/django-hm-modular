@@ -1,8 +1,37 @@
-<!-- modules/templates/modules/module_detail.html -->
-
+{% extends "base.html" %}
+{% block content %}
 <h1>{{ module.name }}</h1>
 <p><strong>URL Path:</strong> {{ module.url_path }}</p>
 <p><strong>Description:</strong> {{ module.description }}</p>
 <p><strong>Version:</strong> {{ module.version }}</p>
 
+<hr>
+
+<h2>Produk dalam Modul Ini:</h2>
+
+{% if products %}
+  <table border="1" cellpadding="10">
+    <tr>
+      <th>Nama Produk</th>
+      <th>Harga</th>
+      <th>Stok</th>
+      <th>Barcode</th>
+    </tr>
+    {% for product in products %}
+    <tr>
+      <td>{{ product.name }}</td>
+      <td>{{ product.price }}</td>
+      <td>{{ product.stock }}</td>
+      <td>
+        <img src="data:image/png;base64,{{ product.barcode }}" width="150" />
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p>Tidak ada produk dalam modul ini.</p>
+{% endif %}
+
+<br>
 <a href="{% url 'module-list' %}">← Kembali ke daftar modul</a>
+{% endblock %}

@@ -1,5 +1,6 @@
 <!-- modules/templates/modules/module_list.html -->
-
+{% extends "base.html" %}
+{% block content %}
 <h1>Module yang Diinstall</h1>
 
 {% if modules %}
@@ -22,13 +23,14 @@
       <form action="{% url 'toggle-module' module.id %}" method="post" style="display:inline;">
         {% csrf_token %}
         {% if module.is_active %}
+        {% if user.is_authenticated and user.userprofile.role == 'manager' %}
         <button type="submit"
           onclick="return confirm('Are you sure you want to uninstall this module?')">Uninstall</button>
+        {% endif %}
         {% else %}
         <button type="submit" onclick="return confirm('Reinstall this module?')">Reinstall</button>
         {% endif %}
       </form>
-
     </td>
   </tr>
   {% endfor %}
@@ -39,3 +41,4 @@
 
 <br>
 <a href="{% url 'install-module' %}"><button>Tambah / Install Modul</button></a>
+{% endblock %}

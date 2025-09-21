@@ -1,14 +1,54 @@
-<!-- modules/templates/modules/edit_module.html -->
-
-<h2>Edit / Upgrade Modul: {{ module.name }}</h2>
+{% extends "base.html" %}
+{% block content %}
 
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">Simpan Perubahan</button>
-</form>
 
+  {{ formset.management_form }}
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nama Produk</th>
+        <th>Harga</th>
+        <th>Stok</th>
+        <!-- <th>Barcode</th> -->
+        {% if user.is_authenticated and user.userprofile.role == 'manager' %}
+        <th>Hapus?</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for product_form in formset %}
+      {% for hidden in product_form.hidden_fields %}
+      {{ hidden }}
+      {% endfor %}
+      {{ form.id }}
+      <tr>
+        <td>{{ product_form.name }}</td>
+        <td>{{ product_form.price }}</td>
+        <td>{{ product_form.stock }}</td>
+        <!-- <td>
+          {% if product_form.instance.barcode %}
+          <img src="data:image/png;base64,{{ product_form.instance.barcode }}" width="150" />
+          {% endif %}
+        </td> -->
+        {% if user.is_authenticated and user.userprofile.role == 'manager' %}
+        <td>{{ product_form.DELETE }}</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+
+  <button type="submit" onclick="return confirmBeforeDelete()">Simpan Perubahan</button>
+
+</form>
 <br>
+<a href="{% url 'module-list' %}">← Kembali ke daftar modul</a>
+
 <script>
   const nameInput = document.getElementById("id_name");
   const urlPathInput = document.getElementById("id_url_path");
@@ -31,12 +71,22 @@
     }
   });
 
-
   urlPathInput.addEventListener('input', function () {
     this.dataset.userEdited = "true";
   });
 </script>
+<script>
+  function confirmBeforeDelete() {
+    const deleteCheckboxes = document.querySelectorAll('input[type="checkbox"][name$="-DELETE"]');
 
-<br>
+    const anyChecked = Array.from(deleteCheckboxes).some(cb => cb.checked);
 
-<a href="{% url 'module-list' %}">← Kembali ke daftar modul</a>
+    if (anyChecked) {
+      return confirm("Apakah Anda yakin ingin menghapus data yang dipilih?");
+    }
+
+    return true; 
+  }
+</script>
+
+{% endblock %}

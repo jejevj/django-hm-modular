@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h2>Tambah / Install Module</h2>
 
 <form method="post">
@@ -36,3 +38,4 @@
 
 <br>
 <a href="{% url 'module-list' %}">← Kembali ke daftar modul</a>
+{% endblock %}

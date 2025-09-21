@@ -21,6 +21,6 @@ from main_apps.views import module_detail_view
 urlpatterns = [
     path('', include('main_apps.urls')),
     path('admin/', admin.site.urls),
-
+    path('accounts/', include('accounts.urls')),
     re_path(r'^(?P<url_path>.+)/$', module_detail_view, name='module-detail'),
 ]

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Tambah Pengguna</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <label for="role">Pilih Role:</label>
+    <select name="role" required>
+      <option value="">-- Pilih Role --</option>
+      <option value="manager">Manager</option>
+      <option value="user">User</option>
+    </select>
+
+    <button type="submit">Daftar</button>
+  </form>
+  <p>Sudah punya akun? <a href="{% url 'login' %}">Login di sini</a></p>
+{% endblock %}

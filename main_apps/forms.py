@@ -1,6 +1,6 @@
 # modules/forms.py
 from django import forms
-from .models import Module
+from .models import Module,NamaProduct
 from django.core.exceptions import ValidationError
 import re
 from django.utils.text import slugify
@@ -14,7 +14,6 @@ class ModuleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # If the form is for a new object and name is present in initial data
         if not self.instance.pk:
             name = self.data.get('name') or self.initial.get('name')
             if name and not self.data.get('url_path'):
@@ -31,3 +30,9 @@ class ModuleForm(forms.ModelForm):
             raise ValidationError("URL path tidak boleh dimulai atau berakhir dengan slash (/).")
         
         return url_path
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = NamaProduct
+        fields = ['name',  'price', 'stock']
+        
