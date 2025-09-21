@@ -1,18 +1,74 @@
-{% extends "base.html" %}
+{% extends "base_auth.html" %}
 {% block content %}
-  <h2>Tambah Pengguna</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+<h2>Tambah Pengguna</h2>
 
-    <label for="role">Pilih Role:</label>
-    <select name="role" required>
+<form method="post" novalidate>
+  {% csrf_token %}
+
+  <!-- Username Field -->
+  <div class="input-group mb-3">
+    <div class="form-floating">
+      <input type="text" name="username" id="registerUsername" 
+             value="{{ form.username.value|default_if_none:'' }}" 
+             class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
+             placeholder="Username" autocomplete="username">
+      <label for="registerUsername">Username</label>
+      {% if form.username.errors %}
+      <div class="invalid-feedback">{{ form.username.errors.0 }}</div>
+      {% endif %}
+    </div>
+    <div class="input-group-text"><span class="bi bi-person-fill"></span></div>
+  </div>
+
+  <!-- Password1 Field -->
+  <div class="input-group mb-3">
+    <div class="form-floating">
+      <input type="password" name="password1" id="registerPassword1" 
+             class="form-control {% if form.password1.errors %}is-invalid{% endif %}" 
+             placeholder="Password" autocomplete="new-password">
+      <label for="registerPassword1">Password</label>
+      {% if form.password1.errors %}
+      <div class="invalid-feedback">{{ form.password1.errors.0 }}</div>
+      {% endif %}
+    </div>
+    <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+  </div>
+
+  <!-- Password2 Field -->
+  <div class="input-group mb-3">
+    <div class="form-floating">
+      <input type="password" name="password2" id="registerPassword2" 
+             class="form-control {% if form.password2.errors %}is-invalid{% endif %}" 
+             placeholder="Ulangi Password" autocomplete="new-password">
+      <label for="registerPassword2">Ulangi Password</label>
+      {% if form.password2.errors %}
+      <div class="invalid-feedback">{{ form.password2.errors.0 }}</div>
+      {% endif %}
+    </div>
+    <div class="input-group-text"><span class="bi bi-shield-lock-fill"></span></div>
+  </div>
+
+  <!-- Role Dropdown -->
+  <div class="input-group mb-3">
+    <select name="role" id="role" class="form-select" required>
       <option value="">-- Pilih Role --</option>
-      <option value="manager">Manager</option>
-      <option value="user">User</option>
+      <option value="manager" {% if request.POST.role == 'manager' %}selected{% endif %}>Manager</option>
+      <option value="user" {% if request.POST.role == 'user' %}selected{% endif %}>User</option>
     </select>
+    <div class="input-group-text"><span class="bi bi-briefcase-fill"></span></div>
+  </div>
 
-    <button type="submit">Daftar</button>
-  </form>
-  <p>Sudah punya akun? <a href="{% url 'login' %}">Login di sini</a></p>
+  <!-- Display general error messages -->
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-danger small">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Submit Button -->
+  <div class="d-grid gap-2">
+    <button type="submit" class="btn btn-primary">Tambahkan</button>
+  </div>
+</form>
+
 {% endblock %}

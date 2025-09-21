@@ -5,6 +5,7 @@ from django.contrib import messages
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
 from main_apps.utils.decorators import role_required
+from .forms import CustomLoginForm
 
 @login_required
 @role_required(['manager'])
@@ -18,18 +19,19 @@ def register_view(request):
             profile = user.userprofile
             profile.role = role
             profile.save()
-            login(request, user)
+            # login(request, user)
             return redirect('profile')
         else:
-            messages.error(request, 'Form tidak valid atau role tidak dipilih.')
+            messages.error(request, 'Kesalahan Input')
     else:
         form = UserCreationForm()
 
     return render(request, 'accounts/register.html', {'form': form})
 
 def login_view(request):
+    form = CustomLoginForm(request, data=request.POST or None)
+    print("Form class:", form.__class__)
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
@@ -37,7 +39,7 @@ def login_view(request):
             if next_url:
                 return redirect(next_url)
             else:
-                return redirect('profile')
+                return redirect('module-list')
         else:
             messages.error(request, 'Username atau password salah.')
     else:
