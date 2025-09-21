@@ -1,0 +1,14 @@
+<!-- modules/templates/modules/module_list.html -->
+<h1>Available Modules</h1>
+
+<ul>
+  {% for module in modules %}
+    <li>
+      <strong>{{ module.title }}</strong> - {{ module.description }}
+      <form action="{% url 'install-module' module.name %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Install / Upgrade</button>
+      </form>
+    </li>
+  {% endfor %}
+</ul>
