@@ -1,12 +1,12 @@
 <!-- modules/templates/modules/add_module.html -->
 
-<h2>Add / Install Module</h2>
+<h2>Tambah / Install Module</h2>
 
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">Install Module</button>
+  <button type="submit">Install Modul</button>
 </form>
 
 <br>
-<a href="{% url 'module-list' %}">← Back to module list</a>
+<a href="{% url 'module-list' %}">← Kembali ke daftar modul</a>

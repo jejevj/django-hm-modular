@@ -1,15 +1,15 @@
 <!-- modules/templates/modules/module_list.html -->
 
-<h1>Installed Modules</h1>
+<h1>Module yang Diinstall</h1>
 
 {% if modules %}
 <table border="1" cellpadding="10">
   <tr>
-    <th>Name</th>
+    <th>Nama Modul</th>
     <th>URL Path</th>
-    <th>Description</th>
-    <th>Version</th>
-    <th>Actions</th>
+    <th>Deskripsi</th>
+    <th>Versi</th>
+    <th>Aksi</th>
   </tr>
   {% for module in modules %}
   <tr>
@@ -38,4 +38,4 @@
 {% endif %}
 
 <br>
-<a href="{% url 'install-module' %}"><button>Add / Install Module</button></a>
+<a href="{% url 'install-module' %}"><button>Tambah / Install Modul</button></a>

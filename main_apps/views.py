@@ -20,7 +20,7 @@ def add_module_view(request):
         form = ModuleForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Module added (installed) successfully.")
+            messages.success(request, "Module berhasil ditambahkan (install).")
             return redirect('module-list')
     else:
         form = ModuleForm()
@@ -31,7 +31,7 @@ def edit_module_view(request, module_id):
     form = ModuleForm(request.POST or None, instance=module)
     if request.method == 'POST' and form.is_valid():
         form.save()
-        messages.success(request, "Module upgraded successfully.")
+        messages.success(request, "Module berhasil diubah (upgrade).")
         return redirect('module-list')
     return render(request, 'modules/edit_module.html', {'form': form, 'module': module})
 
@@ -39,14 +39,14 @@ def uninstall_module_view(request, module_id):
     module = get_object_or_404(Module, id=module_id)
     module.is_active = False
     module.save()
-    messages.success(request, f"Module '{module.name}' uninstalled.")
+    messages.success(request, f"Module '{module.name}' berhasil dilepas (uninstall).")
     return redirect('module-list')
 
 def module_detail_view(request, url_path):
     try:    
         module = Module.objects.get(url_path=url_path, is_active=True)
     except Module.DoesNotExist:
-        raise Http404("Module not found")
+        raise Http404("Modul tidak ditemukan")
     return render(request, 'modules/module_detail.html', {'module': module})
 
 def toggle_module_active_state_view(request, module_id):
@@ -55,9 +55,9 @@ def toggle_module_active_state_view(request, module_id):
     module.save()
     
     if module.is_active:
-        messages.success(request, f"Module '{module.name}' reinstalled.")
+        messages.success(request, f"Module '{module.name}' berhasil dipasang kembali (reinstall).")
     else:
-        messages.success(request, f"Module '{module.name}' uninstalled.")
+        messages.success(request, f"Module '{module.name}' berhasil dilepas (uninstall).")
 
     return redirect('module-list')
 
