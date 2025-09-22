@@ -1,44 +1,91 @@
 <!-- modules/templates/modules/module_list.html -->
 {% extends "base_dash.html" %}
+{% load static %}
+{% block css %}
+{% endblock %}
 {% block content %}
-<h1>Module yang Diinstall</h1>
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Module yang Diinstall</h1>
+        </div>
+      </div>
+    </div>
+  </section>
 
-{% if modules %}
-<table border="1" cellpadding="10">
-  <tr>
-    <th>Nama Modul</th>
-    <th>URL Path</th>
-    <th>Deskripsi</th>
-    <th>Versi</th>
-    <th>Aksi</th>
-  </tr>
-  {% for module in modules %}
-  <tr>
-    <td>{{ module.name }}</td>
-    <td>{{ module.url_path }}</td>
-    <td>{{ module.description }}</td>
-    <td>{{ module.version }}</td>
-    <td>
-      <a href="{% url 'upgrade-module' module.id %}"><button>Upgrade</button></a>
-      <form action="{% url 'toggle-module' module.id %}" method="post" style="display:inline;">
-        {% csrf_token %}
-        {% if module.is_active %}
-        {% if user.is_authenticated and user.userprofile.role == 'manager' %}
-        <button type="submit"
-          onclick="return confirm('Are you sure you want to uninstall this module?')">Uninstall</button>
-        {% endif %}
-        {% else %}
-        <button type="submit" onclick="return confirm('Reinstall this module?')">Reinstall</button>
-        {% endif %}
-      </form>
-    </td>
-  </tr>
-  {% endfor %}
-</table>
-{% else %}
-<p>No modules installed yet.</p>
-{% endif %}
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
 
-<br>
-<a href="{% url 'install-module' %}"><button>Tambah / Install Modul</button></a>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Daftar Modul</h3>
+          <div class="card-tools">
+            <a href="{% url 'install-module' %}" class="btn btn-primary btn-sm">
+              <i class="fas fa-plus"></i> Tambah / Install Modul
+            </a>
+          </div>
+        </div>
+
+        <div class="card-body p-0">
+          {% if modules %}
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover mb-0">
+              <thead class="thead-light">
+                <tr>
+                  <th>Nama Modul</th>
+                  <th>URL Path</th>
+                  <th>Deskripsi</th>
+                  <th>Versi</th>
+                  <th style="width: 180px;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for module in modules %}
+                <tr>
+                  <td>{{ module.name }}</td>
+                  <td>{{ module.url_path }}</td>
+                  <td>{{ module.description }}</td>
+                  <td>{{ module.version }}</td>
+                  <td>
+                    <a href="{% url 'upgrade-module' module.id %}" class="btn btn-sm btn-warning mb-1">
+                      <i class="fas fa-arrow-up"></i> Upgrade
+                    </a>
+
+                    <form action="{% url 'toggle-module' module.id %}" method="post" style="display:inline;">
+                      {% csrf_token %}
+                      {% if module.is_active %}
+                      {% if user.is_authenticated and user.userprofile.role == 'manager' %}
+                      <button type="submit" class="btn btn-sm btn-danger mb-1"
+                        onclick="return confirm('Are you sure you want to uninstall this module?')">
+                        <i class="fas fa-times-circle"></i> Uninstall
+                      </button>
+                      {% endif %}
+                      {% else %}
+                      <button type="submit" class="btn btn-sm btn-success mb-1"
+                        onclick="return confirm('Reinstall this module?')">
+                        <i class="fas fa-undo"></i> Reinstall
+                      </button>
+                      {% endif %}
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <div class="p-3">
+            <p class="text-muted">No modules installed yet.</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
 {% endblock %}

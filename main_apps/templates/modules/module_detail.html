@@ -1,37 +1,52 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>{{ module.name }}</h1>
-<p><strong>URL Path:</strong> {{ module.url_path }}</p>
-<p><strong>Description:</strong> {{ module.description }}</p>
-<p><strong>Version:</strong> {{ module.version }}</p>
+<div class="container mt-5">
 
-<hr>
+  <!-- ========== HERO / MODULE INFO ========== -->
+  <div class="card mb-4 shadow">
+    <div class="card-body">
+      <h2 class="card-title">{{ module.name }}</h2>
+      <p><strong>URL Path:</strong> {{ module.url_path }}</p>
+      <p><strong>Deskripsi:</strong> {{ module.description }}</p>
+      <p><strong>Versi:</strong> {{ module.version }}</p>
+    </div>
+  </div>
 
-<h2>Produk dalam Modul Ini:</h2>
+  <!-- ========== PRODUCT LIST ========== -->
+  <div class="mb-3">
+    <h3 class="mb-3">Produk dalam Modul Ini</h3>
 
-{% if products %}
-  <table border="1" cellpadding="10">
-    <tr>
-      <th>Nama Produk</th>
-      <th>Harga</th>
-      <th>Stok</th>
-      <th>Barcode</th>
-    </tr>
-    {% for product in products %}
-    <tr>
-      <td>{{ product.name }}</td>
-      <td>{{ product.price }}</td>
-      <td>{{ product.stock }}</td>
-      <td>
-        <img src="data:image/png;base64,{{ product.barcode }}" width="150" />
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
-{% else %}
-  <p>Tidak ada produk dalam modul ini.</p>
-{% endif %}
+    {% if products %}
+    <div class="row">
+      {% for product in products %}
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">
+              <strong>Harga:</strong> Rp {{ product.price }}<br>
+              <strong>Stok:</strong> {{ product.stock }}
+            </p>
+            {% if product.barcode %}
+            <img src="data:image/png;base64,{{ product.barcode }}" alt="Barcode" class="img-fluid mt-auto">
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+      Tidak ada produk dalam modul ini.
+    </div>
+    {% endif %}
+  </div>
 
-<br>
-<a href="{% url 'module-list' %}">← Kembali ke daftar modul</a>
+  <!-- ========== BACK BUTTON ========== -->
+  {% if user.is_authenticated %}
+  <a href="{% url 'module-list' %}" class="btn btn-secondary mt-3">
+    <i class="fas fa-arrow-left"></i> Kembali ke daftar modul
+  </a>
+  {% endif %}
+</div>
 {% endblock %}

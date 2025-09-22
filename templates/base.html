@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Title</title>
+    <title>Landing Pages</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -29,8 +29,10 @@
             {% block content %}
             <!-- Page content goes here -->
             {% endblock %}
-            <p><a href="{% url 'logout' %}">Logout</a></p>
 
+            {% if user.is_authenticated %}
+            <p><a href="{% url 'logout' %}">Logout</a></p>
+            {% endif %}
         </div>
     </main>
     <footer>

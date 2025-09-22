@@ -1,13 +1,67 @@
-{% extends "base.html" %}
+{% extends "base_dash.html" %}
 {% block content %}
-<h2>Tambah / Install Module</h2>
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Install Modul</button>
-</form>
+<div class="container mt-4">
+  <h2 class="mb-4">Tambah / Install Module</h2>
 
+  <form method="post">
+    {% csrf_token %}
+
+    <!-- Name Field -->
+    <div class="form-floating mb-3">
+      <input type="text" name="name" id="id_name" value="{{ form.name.value|default_if_none:'' }}"
+             class="form-control" placeholder="Nama Modul">
+      <label for="id_name">Nama Modul</label>
+      {% if form.name.errors %}
+        <div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>
+      {% endif %}
+    </div>
+
+    <!-- URL Path Field -->
+    <div class="form-floating mb-3">
+      <input type="text" name="url_path" id="id_url_path" value="{{ form.url_path.value|default_if_none:'' }}"
+             class="form-control" placeholder="URL Path">
+      <label for="id_url_path">URL Path</label>
+      {% if form.url_path.errors %}
+        <div class="text-danger small mt-1">{{ form.url_path.errors.0 }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Description Field -->
+    <div class="form-floating mb-3">
+      <textarea name="description" id="id_description" class="form-control"
+                placeholder="Deskripsi Modul" style="height: 100px">{{ form.description.value|default_if_none:'' }}</textarea>
+      <label for="id_description">Deskripsi Modul</label>
+      {% if form.description.errors %}
+        <div class="text-danger small mt-1">{{ form.description.errors.0 }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Version Field -->
+    <div class="form-floating mb-3">
+      <input type="text" name="version" id="id_version" value="{{ form.version.value|default_if_none:'' }}"
+             class="form-control" placeholder="Versi Modul">
+      <label for="id_version">Versi Modul</label>
+      {% if form.version.errors %}
+        <div class="text-danger small mt-1">{{ form.version.errors.0 }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Submit Button -->
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Install Modul
+      </button>
+    </div>
+  </form>
+
+  <br>
+  <a href="{% url 'module-list' %}" class="btn btn-secondary">
+    <i class="fas fa-arrow-left"></i> Kembali ke daftar modul
+  </a>
+</div>
+
+<!-- Slugify JS -->
 <script>
   const nameInput = document.getElementById("id_name");
   const urlPathInput = document.getElementById("id_url_path");
@@ -16,11 +70,11 @@
     return text
       .toLowerCase()
       .trim()
-      .replace(/[^a-z0-9\s\-\/]/g, '')  
-      .replace(/\s+/g, '-')             
-      .replace(/\/+/g, '/')             
-      .replace(/\-+/g, '-')             
-      .replace(/^\-+|\-+$/g, '');       
+      .replace(/[^a-z0-9\s\-\/]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/\/+/g, '/')
+      .replace(/\-+/g, '-')
+      .replace(/^\-+|\-+$/g, '');
   }
 
   nameInput.addEventListener('input', function () {
@@ -30,12 +84,9 @@
     }
   });
 
-
   urlPathInput.addEventListener('input', function () {
     this.dataset.userEdited = "true";
   });
 </script>
 
-<br>
-<a href="{% url 'module-list' %}">← Kembali ke daftar modul</a>
 {% endblock %}
